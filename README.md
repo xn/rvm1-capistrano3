@@ -35,12 +35,15 @@ based on this instruction <http://rvm.io/rvm/security> a minimalistic
 task can be added to handle the keys installation:
 
 ```ruby
-namespace :app do
+# config/deploy.rb
+namespace :deploy do
   task :update_rvm_key do
-    execute :gpg, "--keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3"
+    on roles(:app) do
+      execute :gpg, "--keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3" # mpapis
+    end
   end
 end
-before "rvm1:install:rvm", "app:update_rvm_key"
+before "rvm1:install:rvm", "deploy:update_rvm_key"
 ```
 replace `:gpg` with `:gpg2` depending on the output from RVM.
 
